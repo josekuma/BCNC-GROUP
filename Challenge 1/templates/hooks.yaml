@@ -1,0 +1,16 @@
+apiVersion: batch/v1 #her eyou make the last part of the challengue 1, which is to execute a random script on every helm update execution
+kind: Job
+metadata:
+  name: "ping-post-upgrade"
+  labels:
+    app.kubernetes.io/name: {{ include "ping.name" . }}
+    helm.sh/hook: post-upgrade
+    helm.sh/hook-delete-policy: hook-succeeded
+spec:
+  template:
+    spec:
+      containers:
+        - name: post-upgrade-script
+          image: busybox
+          command: ["/bin/sh", "-c", "echo Running post-upgrade script; ./random-script.sh"] # Repalce the route to the one you wish
+      restartPolicy: Never
